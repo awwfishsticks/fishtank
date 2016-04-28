@@ -1,0 +1,25 @@
+def pretty_print(thing, num_spaces=0, key_spaces=0):
+    def set_or_list(chars):
+        print(chars[0], end='')
+        for i, item in enumerate(thing, 1):
+            pretty_print(item, num_spaces+1, key_spaces=key_spaces)
+            if i < len(thing):
+                print(',\n'+' '*(num_spaces+key_spaces), end='')
+        print(chars[1], end='')
+    if type(thing) not in (list, set, dict):
+        print(thing, end='')
+    elif isinstance(thing, set):
+        set_or_list('{}')
+    elif isinstance(thing, list):
+        set_or_list('[]')
+    elif isinstance(thing, dict):
+        num_spaces += key_spaces + 1
+        print('{', end='')
+        for i, key in enumerate(thing.keys(), 1):
+            key_spaces = len(key+'"": ')
+            print('%r:' % key, end=' ')
+            pretty_print(thing[key], num_spaces, key_spaces=key_spaces)
+            if i < len(thing):
+                print(',\n'+' '*num_spaces, end='')
+        num_spaces -= (key_spaces + 1)
+        print('}', end='')
